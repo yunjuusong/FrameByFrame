@@ -18,6 +18,26 @@ body, html, .app-container {
   padding: 10px 20px;
 }
 
+/* Style for the clickable white text links */
+.nav-links a {
+  color: white; /* Set text color to white */
+  text-decoration: none; /* Remove underline */
+  font-size: 18px; /* Set font size */
+  margin-right: 20px; /* Add space between links */
+  cursor: pointer; /* Change cursor to pointer for a clickable link */
+  transition: color 0.3s ease; /* Smooth transition for text color */
+}
+
+.nav-links a:hover {
+  color: #f0f0f0; /* Change text color on hover */
+}
+
+/* Style for active link */
+.nav-links a.active {
+  border-bottom: 2px solid white; /* Underline the active page */
+  padding-bottom: 2px; /* Adjust padding for underline effect */
+}
+
 /* Main container styling */
 .main-container {
   display: flex;
@@ -87,20 +107,21 @@ body, html, .app-container {
 
 /* Bottom bar styling */
 .bottom-bar {
-  height: 100px;
+  height: 100px;  /* Adjust height as necessary */
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
   display: flex;
+  justify-content: flex-start; /* Align items to the start of the container */
   align-items: center;
-  overflow-x: auto;
-  padding: 10px;
-  gap: 10px;
+  font-size: 18px;
+  color: #aaa;
+  overflow-x: auto;  /* Enable horizontal scrolling */
+  padding: 10px 0;  /* Add some padding to the top/bottom */
+  white-space: nowrap; /* Prevent items from wrapping onto a new line */
 }
 
 .bottom-bar img {
-  height: 80px;
-  width: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  margin-right: 10px;  /* Add space between images */
+  height: 80px;  /* Set the height of images (you can adjust as needed) */
+  width: 80px;  /* Set the width of images */
 }

@@ -60,14 +60,14 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="task-bar">
-        <div className="nav-links">
+      <div class="task-bar">
+        <div class="nav-links">
           <a href="index.html">Home</a>
-          <a href="collaborate.html" className="collaborate">Collaborate</a>
+          <a href="collaborate.html" class="collaborate">Collaborate</a>
         </div>
-        <div className="actions">
-          <button onClick={() => alert("Starting over...")}>Start Over</button>
-          <button onClick={() => alert("Publishing...")}>Publish</button>
+        <div class="actions">
+          <button onclick="startOver()">Start Over</button>
+          <button onclick="publish()">Publish</button>
         </div>
       </div>
 
@@ -116,7 +116,6 @@ function App() {
 
       {/* Bottom bar - Display images from the database */}
       <div className="bottom-bar">
-        <h3>Stored Images</h3>
         {allImage.length === 0 ? (
           <p>No images in the database</p>
         ) : (

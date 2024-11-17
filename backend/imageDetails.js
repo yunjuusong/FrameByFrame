@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 
-const ImageDetailsScehma = new mongoose.Schema(
+const ImageDetailsSchema = new mongoose.Schema(
   {
-   image:String
+    name: String,
+    image: {
+      data: Buffer,
+      contentType: String
+    }
   },
   {
     collection: "ImageDetails",
   }
 );
 
-mongoose.model("ImageDetails", ImageDetailsScehma);
+mongoose.model("ImageDetails", ImageDetailsSchema);

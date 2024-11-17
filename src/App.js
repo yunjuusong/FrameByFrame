@@ -5,33 +5,57 @@ import './App.css';
 function App() {
   const [image, setImage] = useState(null);
   const [allImage, setAllImage] = useState([]);
-  const [uploadedImages, setUploadedImages] = useState([]);  // Track uploaded images
+  const [uploadedImages, setUploadedImages] = useState([]);
 
   useEffect(() => {
-    getImage(); // Fetch images from the database
+    getImage();
   }, []);
 
   const submitImage = async (e) => {
     e.preventDefault();
+    
+    if (!image) return;
 
     const formData = new FormData();
     formData.append("image", image);
 
-    // Upload image to the server
-    await axios.post("http://localhost:5000/upload-image", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    getImage();  // Refresh images from the database after upload
-    setUploadedImages([...uploadedImages, image]);  // Add uploaded image to the sidebar
+    try {
+      await axios.post("http://localhost:5000/upload-image", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      
+      // Add to uploaded images preview
+      setUploadedImages([...uploadedImages, {
+        id: Date.now(),  // Temporary ID for preview
+        previewUrl: URL.createObjectURL(image)
+      }]);
+      
+      // Refresh database images
+      getImage();
+      
+      // Reset file input
+      e.target.reset();
+      setImage(null);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Failed to upload image");
+    }
   };
 
   const onInputChange = (e) => {
-    setImage(e.target.files[0]);
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
   };
 
   const getImage = async () => {
-    const result = await axios.get("http://localhost:5000/get-image");
-    setAllImage(result.data.data);  // Set images from the database
+    try {
+      const result = await axios.get("http://localhost:5000/get-all-images");
+      setAllImage(result.data.data);
+    } catch (error) {
+      console.error("Failed to fetch images:", error);
+      alert("Failed to load images");
+    }
   };
 
   return (
@@ -51,20 +75,33 @@ function App() {
         {/* Sidebar - Display uploaded images */}
         <div className="sidebar">
           <form onSubmit={submitImage}>
-            <input type="file" accept="image/*" onChange={onInputChange}></input>
-            <button type="submit">Submit</button>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={onInputChange}
+              className="file-input"
+            />
+            <button 
+              type="submit" 
+              disabled={!image}
+              className="submit-button"
+            >
+              Submit
+            </button>
           </form>
           <div className="uploaded-images">
+            <h3>Recently Uploaded</h3>
             {uploadedImages.length === 0 ? (
               <p>No images uploaded</p>
             ) : (
-              uploadedImages.map((img, index) => (
+              uploadedImages.map((img) => (
                 <img
-                  key={index}
-                  src={URL.createObjectURL(img)}  // Display uploaded image preview
+                  key={img.id}
+                  src={img.previewUrl}
+                  className="thumbnail"
                   height={60}
                   width={60}
-                  alt="uploaded"
+                  alt="uploaded preview"
                 />
               ))
             )}
@@ -79,18 +116,22 @@ function App() {
 
       {/* Bottom bar - Display images from the database */}
       <div className="bottom-bar">
+        <h3>Stored Images</h3>
         {allImage.length === 0 ? (
           <p>No images in the database</p>
         ) : (
-          allImage.map((data, index) => (
-            <img
-              key={index}
-              src={require(`./images/${data.image}`)}  // Database images
-              height={60}
-              width={60}
-              alt="database-image"
-            />
-          ))
+          <div className="image-grid">
+            {allImage.map((data) => (
+              <img
+                key={data._id}
+                src={`http://localhost:5000/get-image/${data._id}`}
+                className="thumbnail"
+                height={60}
+                width={60}
+                alt={data.name || "stored image"}
+              />
+            ))}
+          </div>
         )}
       </div>
     </div>

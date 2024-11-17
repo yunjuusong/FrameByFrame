@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import './App.css';
+import { FastImageSequence } from "@mediamonks/fast-image-sequence";
 
 function App() {
   const [image, setImage] = useState(null);
   const [allImage, setAllImage] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
+  const sequenceContainerRef = useRef(); // Ref for the image sequence container
 
   useEffect(() => {
     getImage();
@@ -56,6 +58,27 @@ function App() {
       console.error("Failed to fetch images:", error);
       alert("Failed to load images");
     }
+  };
+
+  const renderImageSequence = async () => {
+    if (allImage.length === 0) {
+      alert("No images available for rendering the sequence.");
+      return;
+    }
+
+    // Prepare the sequence
+    const options = {
+      frames: allImage.length,
+      src: {
+        imageURL: (index) => `http://localhost:5000/get-image/${allImage[index]._id}`,
+      },
+      loop: true,
+      objectFit: "cover",
+    };
+
+    // Create and play the sequence
+    const sequence = new FastImageSequence(sequenceContainerRef.current, options);
+    sequence.play();
   };
 
   return (
@@ -110,7 +133,18 @@ function App() {
 
         {/* Preview screen */}
         <div className="preview-screen">
-          <div className="preview-content">Preview Screen</div>
+          <h2>Preview Screen</h2>
+          <div
+            ref={sequenceContainerRef}
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: "black",
+            }}
+          />
+          <button onClick={renderImageSequence} className="render-button">
+            Play Image Sequence
+          </button>
         </div>
       </div>
 

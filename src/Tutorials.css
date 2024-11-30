@@ -1,22 +1,158 @@
-/* Tutorial styling for floating boxes */
-.floating-box {
+/* General styling for the tutorial boxes */
+.tutorials-container .floating-box {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     width: 250px;
-    z-index: 10; /* Ensure they stay on top of other elements */
-  }
-  
-  .floating-box h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .floating-box p {
     font-size: 14px;
-    line-height: 1.4;
+    z-index: 1000; /* Ensures the tutorial boxes are above other elements */
+    display: block; /* Make boxes visible all the time */
+    box-sizing: border-box;
+  }
+  
+  /* Titles inside floating boxes */
+  .tutorials-container .floating-box h3 {
+    margin-top: 0;
+  }
+  
+  /* Arrow styles */
+  .tutorials-container .floating-box::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(0, 0, 0, 0.7); /* Arrow pointing down */
+  }
+  
+  /* Positioning for each tutorial box with more space between them */
+  .tutorials-container .choose-file-box {
+    top: 10%;
+    left: 5%;
+  }
+  
+  .tutorials-container .submit-box {
+    top: 25%;
+    left: 5%;
+  }
+  
+  .tutorials-container .bottom-bar-box {
+    bottom: 15%;
+    left: 5%;
+  }
+  
+  .tutorials-container .play-sequence-box {
+    top: 10%;
+    right: 10%; /* Adjusted to the right */
+  }
+  
+  .tutorials-container .start-over-box {
+    top: 10%;
+    right: 25%; /* Adjusted to the right */
+  }
+  
+  .tutorials-container .publish-box {
+    top: 10%;
+    right: 40%; /* Adjusted to the right */
+  }
+  
+  /* Arrow positions for each tutorial box */
+  .tutorials-container .choose-file-box::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px; /* Long arrow to reach the component */
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  .tutorials-container .submit-box::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px;
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  .tutorials-container .bottom-bar-box::after {
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%) rotate(180deg); /* Arrow pointing up */
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px;
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  .tutorials-container .play-sequence-box::after {
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%) rotate(180deg); /* Arrow pointing up */
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px;
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  .tutorials-container .start-over-box::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px;
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  .tutorials-container .publish-box::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border-top-color: rgba(0, 0, 0, 0.7);
+    width: 200px;
+    border-top-width: 10px;
+    border-bottom: 0;
+  }
+  
+  /* Additional positioning for spacing */
+  .tutorials-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none; /* Allow clicks through */
+    display: flex;
+    justify-content: flex-end; /* Align boxes to the right */
+    align-items: flex-start; /* Ensure the tutorial boxes stay at the top */
+    flex-wrap: wrap;
+  }
+  
+  .tutorials-container .floating-box {
+    pointer-events: auto; /* Enable interaction with the boxes */
+  }
+  
+  /* Adjust the bottom bar to make sure it doesn't overlap tutorial boxes */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ddd;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #aaa;
+    overflow-x: auto;
+    white-space: nowrap;
+    z-index: 500;
   }
   

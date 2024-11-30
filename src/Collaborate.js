@@ -131,6 +131,9 @@ function Collaborate() {
             <button className="publish-button" onClick={handlePublish}>
               Publish
             </button>
+            <button onClick={renderImageSequence} className="render-button">
+                Play Image Sequence
+            </button>
           </div>
         </div>
         <div

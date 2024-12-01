@@ -8,18 +8,18 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        {/* Task Bar */}
-        <div className="task-bar">
-          <div className="nav-links">
-            <span className="website-title">Frame by Frame </span>
-            <img src={require('./images/Group 3.png')} alt="Logo" className="logo" /> {/* Add logo */}
-            <Link to="/">Home</Link>
-            <Link to="/tutorials">Tutorials</Link>
-            <Link to="/collaborate" className="collaborate">Collaborate</Link>
-          </div>
-          <div className="actions">
-          </div>
+      {/* Task Bar */}
+      <div className="task-bar">
+        <div className="left-side">
+          <span className="website-title">Frame by Frame </span>
+          <img src={require('./images/Group 3.png')} alt="Logo" className="logo" />
         </div>
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          <Link to="/tutorials">Tutorials</Link>
+          <Link to="/collaborate" className="collaborate">Collaborate</Link>
+        </div>
+      </div>
 
         {/* Routes */}
         <Routes>

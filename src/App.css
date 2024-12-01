@@ -12,7 +12,7 @@ body, html, .app-container {
 .task-bar {
   display: flex;
   align-items: center;
-  background-color: #333;
+  background-color: white;
   color: white;
   padding: 10px 20px;
   justify-content: space-between; /* Keep space between title/logo and links */
@@ -39,7 +39,7 @@ body, html, .app-container {
 
 /* Navigation links in task bar */
 .task-bar .nav-links a {
-  color: white; /* Set text color to white */
+  color: black; /* Set text color to white */
   text-decoration: none; /* Remove underline */
   font-size: 24px;
   margin-left: 20px; /* Space between links */
@@ -166,6 +166,19 @@ body, html, .app-container {
   object-fit: cover;
 }
 
+.website-title {
+  color: black;
+  font-size: 40px; /* Adjust title size on small screens */
+}
+
+.description-container {
+  text-align: left;
+  background-color: white;
+  padding: 20px;
+  width: 100px;
+  margin: 20px;
+}
+
 /* Task bar layout adjustments for responsive design */
 @media (max-width: 768px) {
   .task-bar {
@@ -181,9 +194,5 @@ body, html, .app-container {
   .task-bar .nav-links a {
     margin-left: 0;
     margin-top: 10px;
-  }
-
-  .website-title {
-    font-size: 24px; /* Adjust title size on small screens */
   }
 }

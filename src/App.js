@@ -35,8 +35,9 @@ function App() {
 function Home() {
   return (
     <div className="main-container">
-      <h1>Welcome to the Main Page</h1>
-      <p>Navigate using the links above.</p>
+      <div className="description-container">
+        <p>Join a collaborative art piece where each contribution tells a story—a piece of a larger artwork that captures the range and liveliness of the human condition, frame by frame.</p>
+      </div>
     </div>
   );
 }

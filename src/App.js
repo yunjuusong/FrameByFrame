@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import './App.css';
 import Collaborate from './Collaborate'; // Import the new Collaborate component
 import Tutorials from './Tutorials';
+import { FastImageSequence } from "@mediamonks/fast-image-sequence";
+import axios from "axios";
+
 
 function App() {
   return (
@@ -33,11 +36,74 @@ function App() {
 }
 
 function Home() {
+  const [allImage, setAllImage] = useState([]);
+  const sequenceContainerRef = useRef(null); // Ref for the image sequence container
+  const sequenceInitialized = useRef(false); // Ref to track if sequence is initialized
+
+  // Fetch images from the backend
+  const getImage = async () => {
+    try {
+      const result = await axios.get("http://localhost:5000/get-all-images");
+      setAllImage(result.data.data);
+    } catch (error) {
+      console.error("Failed to fetch images:", error);
+    }
+  };
+
+  // Render the image sequence
+  const renderImageSequence = () => {
+    if (allImage.length === 0) {
+      alert("No images available for rendering the sequence.");
+      return;
+    }
+
+    // Only initialize the sequence if it hasn't been initialized already
+    if (sequenceInitialized.current) return;
+
+    const options = {
+      frames: allImage.length,
+      src: {
+        imageURL: (index) => `http://localhost:5000/get-image/${allImage[index]._id}`,
+      },
+      loop: true,
+      objectFit: "cover",
+    };
+
+    const sequence = new FastImageSequence(sequenceContainerRef.current, options);
+    sequence.play();
+
+    sequenceInitialized.current = true; // Set the flag to true after initialization
+  };
+
+  // Fetch the images when the component mounts
+  useEffect(() => {
+    getImage();
+  }, []);
+
+  useEffect(() => {
+    if (allImage.length > 0) {
+      renderImageSequence(); // Start the sequence after images are fetched
+    }
+  }, [allImage]);
+
   return (
     <div className="main-container">
       <div className="description-container">
-        <p>Join a collaborative art piece where each contribution tells a story—a piece of a larger artwork that captures the range and liveliness of the human condition, frame by frame.</p>
+        <p>
+          Join a collaborative art piece where each contribution tells a story—a piece of a larger artwork that captures the range and liveliness of the human condition, frame by frame.
+        </p>
       </div>
+
+      {/* Video / Image sequence container */}
+      <div
+        ref={sequenceContainerRef}
+        style={{
+          width: "900px",
+          height: "500px",  // Adjust the height of the video container
+          backgroundColor: "black",
+          marginTop: "20px",
+        }}
+      />
     </div>
   );
 }

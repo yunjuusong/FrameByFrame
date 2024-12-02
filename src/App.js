@@ -1,10 +1,10 @@
+import { FastImageSequence } from "@mediamonks/fast-image-sequence";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import './App.css';
 import Collaborate from './Collaborate'; // Import the new Collaborate component
 import Tutorials from './Tutorials';
-import { FastImageSequence } from "@mediamonks/fast-image-sequence";
-import axios from "axios";
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         </div>
         <div className="nav-links">
           <Link to="/">Home</Link>
-          <Link to="/tutorials">Tutorials</Link>
+          <Link to="/tutorials">Tutorial</Link>
           <Link to="/collaborate" className="collaborate">Collaborate</Link>
         </div>
       </div>

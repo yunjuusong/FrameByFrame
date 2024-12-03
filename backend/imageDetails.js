@@ -1,3 +1,4 @@
+// imageDetails.js
 const mongoose = require("mongoose");
 
 const ImageDetailsSchema = new mongoose.Schema(
@@ -6,11 +7,17 @@ const ImageDetailsSchema = new mongoose.Schema(
     image: {
       data: Buffer,
       contentType: String
-    }
+    },
+    editable: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     collection: "ImageDetails",
   }
 );
 
-mongoose.model("ImageDetails", ImageDetailsSchema);
+const Images = mongoose.model("ImageDetails", ImageDetailsSchema);
+
+module.exports = Images;  // Export the model

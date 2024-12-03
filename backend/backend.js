@@ -40,8 +40,10 @@ app.post("/upload-image", upload.single("image"), async (req, res) => {
       name: req.file.originalname,
       image: {
         data: req.file.buffer,
-        contentType: req.file.mimetype
-      }
+        contentType: req.file.mimetype,
+      },
+      editable: true,
+      draggable: true,
     });
 
     await newImage.save();
@@ -69,7 +71,8 @@ app.get("/get-image/:id", async (req, res) => {
 
 app.get("/get-all-images", async (req, res) => {
   try {
-    const images = await Images.find({}, 'name _id');  // Only fetch name and ID
+    const images = await Images.find({}, 'name _id editable');  // Ensure to select 'editable'
+    console.log(images); // Log the full result here
     res.json({ status: "ok", data: images });
   } catch (error) {
     console.error(error);
@@ -79,4 +82,27 @@ app.get("/get-all-images", async (req, res) => {
 
 app.listen(5000, () => {
   console.log("Server Started");
+});
+
+app.delete("/delete-image/:id", async (req, res) => {
+  try {
+    const image = await Images.findByIdAndDelete(req.params.id);
+    if (!image) {
+      return res.status(404).json({ status: "error", message: "Image not found" });
+    }
+    res.json({ status: "ok", message: "Image deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
+app.post("/publish-images", async (req, res) => {
+  try {
+    await Images.updateMany({}, { $set: { editable: false, draggable: false } });
+    res.json({ status: "ok", message: "All images published" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: error.message });
+  }
 });

@@ -58,8 +58,9 @@ function Home() {
   // Fetch images from the backend
   const getImage = async () => {
     try {
-      const result = await axios.get("http://localhost:5000/get-all-images");
-      setAllImage(result.data.data);
+      await axios.delete(`http://localhost:5000/delete-image/${id}`);
+      console.log(`Deleted image with ID: ${id}`);
+      fetchImages(); // Refresh the list after deletion
     } catch (error) {
       console.error("Failed to fetch images:", error);
     }
@@ -124,3 +125,4 @@ function Home() {
 }
 
 export default App;
+

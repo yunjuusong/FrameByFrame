@@ -11,6 +11,7 @@
     display: block; /* Make boxes visible all the time */
     box-sizing: border-box;
   }
+
   
   /* Titles inside floating boxes */
   .tutorials-container .floating-box h3 {
@@ -156,3 +157,99 @@
     z-index: 500;
   }
   
+  .file-input-button {
+    font-size: 13px !important; /* Set font size */
+    line-height: 1; /* Adjust line height */
+    border-radius: 4px; /* Slightly rounded corners */
+    width: 90px; /* Button width */
+    height: 20px; /* Button height */
+    text-align: center; /* Horizontally center the text */
+    vertical-align: middle; /* Vertically center the text */
+    display: inline-flex; /* Use flexbox to align content */
+    justify-content: center; /* Center content horizontally within flex container */
+    align-items: center; /* Center content vertically within flex container */
+    outline: 2px solid red; /* Red outline */
+}
+
+.submit-button {
+  line-height: 1; /* Adjust line height */
+  border-radius: 4px; /* Slightly rounded corners */
+  text-align: center; /* Horizontally center the text */
+  vertical-align: middle; /* Vertically center the text */
+  display: inline-flex; /* Use flexbox to align content */
+  justify-content: center; /* Center content horizontally within flex container */
+  align-items: center; /* Center content vertically within flex container */
+  outline: 2px solid red; /* Red outline */
+}
+
+.bottom-bar-button {
+  line-height: 1; /* Adjust line height */
+  border-radius: 4px; /* Slightly rounded corners */
+  text-align: center; /* Horizontally center the text */
+  outline: 2px solid red; /* Red outline */
+}
+
+.start-over-button {
+  line-height: 1; /* Adjust line height */
+  border-radius: 4px; /* Slightly rounded corners */
+  text-align: center; /* Horizontally center the text */
+  outline: 2px solid red; /* Red outline */
+}
+
+.publish-button {
+  line-height: 1; /* Adjust line height */
+  border-radius: 4px; /* Slightly rounded corners */
+  text-align: center; /* Horizontally center the text */
+  outline: 2px solid red; /* Red outline */
+}
+
+.render-button {
+  line-height: 1; /* Adjust line height */
+  border-radius: 4px; /* Slightly rounded corners */
+  text-align: center; /* Horizontally center the text */
+  outline: 2px solid red; /* Red outline */
+}
+
+/* Popup styles */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h3 {
+  margin-bottom: 10px;
+}
+
+.popup-content p {
+  margin-bottom: 20px;
+}
+
+.close-popup {
+  padding: 10px 20px;
+  background-color: #9f9f9f; /* Red color for the button */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.close-popup:hover {
+  background-color: #777777; /* Darker gray on hover */
+}

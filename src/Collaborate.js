@@ -1,13 +1,13 @@
 import { FastImageSequence } from "@mediamonks/fast-image-sequence";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import './App.css';
+import "./App.css";
 
 function Collaborate() {
   const [image, setImage] = useState(null);
   const [allImage, setAllImage] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
-  const sequenceContainerRef = useRef(); // Ref for the image sequence container
+  const sequenceContainerRef = useRef();
 
   useEffect(() => {
     getImage();
@@ -24,10 +24,13 @@ function Collaborate() {
       await axios.post("http://localhost:5000/upload-image", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setUploadedImages([...uploadedImages, {
-        id: Date.now(),
-        previewUrl: URL.createObjectURL(image),
-      }]);
+      setUploadedImages([
+        ...uploadedImages,
+        {
+          id: Date.now(),
+          previewUrl: URL.createObjectURL(image),
+        },
+      ]);
       getImage();
       e.target.reset();
       setImage(null);
@@ -46,6 +49,7 @@ function Collaborate() {
   const getImage = async () => {
     try {
       const result = await axios.get("http://localhost:5000/get-all-images");
+      console.log("Fetched Images:", result.data.data);
       setAllImage(result.data.data);
     } catch (error) {
       console.error("Failed to fetch images:", error);
@@ -62,7 +66,8 @@ function Collaborate() {
     const options = {
       frames: allImage.length,
       src: {
-        imageURL: (index) => `http://localhost:5000/get-image/${allImage[index]._id}`,
+        imageURL: (index) =>
+          `http://localhost:5000/get-image/${allImage[index]._id}`,
       },
       loop: true,
       objectFit: "cover",
@@ -73,13 +78,34 @@ function Collaborate() {
   };
 
   const handleStartOver = () => {
-    // Reset any state or action related to starting over
     console.log("Start Over");
   };
 
   const handlePublish = () => {
-    // Logic for the publish action
     alert("Published!");
+  };
+
+  const onDragStart = (event, id) => {
+    event.dataTransfer.setData("imageId", id);
+  };
+
+  const onDrop = (event, targetId) => {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData("imageId");
+    const updatedImages = [...allImage];
+    const sourceIndex = updatedImages.findIndex((img) => img._id === sourceId);
+    const targetIndex = updatedImages.findIndex((img) => img._id === targetId);
+
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const [movedImage] = updatedImages.splice(sourceIndex, 1);
+    updatedImages.splice(targetIndex, 0, movedImage);
+
+    setAllImage(updatedImages); // Update the image order
+  };
+
+  const onDragOver = (event, data) => {
+    event.preventDefault(); // Prevent drop if the image is non-editable
   };
 
   return (
@@ -87,14 +113,14 @@ function Collaborate() {
       {/* Sidebar */}
       <div className="sidebar">
         <form onSubmit={submitImage}>
-          <input 
-            type="file" 
-            accept="image/*" 
+          <input
+            type="file"
+            accept="image/*"
             onChange={onInputChange}
             className="file-input"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={!image}
             className="submit-button"
           >
@@ -132,7 +158,7 @@ function Collaborate() {
               Publish
             </button>
             <button onClick={renderImageSequence} className="render-button">
-                Play Image Sequence
+              Play Image Sequence
             </button>
           </div>
         </div>
@@ -144,9 +170,6 @@ function Collaborate() {
             backgroundColor: "black",
           }}
         />
-        <button onClick={renderImageSequence} className="render-button">
-          Play Image Sequence
-        </button>
       </div>
 
       {/* Bottom bar */}
@@ -154,16 +177,24 @@ function Collaborate() {
         {allImage.length === 0 ? (
           <p>No images in the database</p>
         ) : (
-          <div className="image-grid">
-            {allImage.map((data) => (
+          allImage.map((data) => (
+            <div
+              key={data._id}
+              className={`thumbnail-container ${
+                data.editable ? "editable" : "non-editable"
+              }`}
+              onDragStart={(event) => onDragStart(event, data._id)}
+              onDragOver={onDragOver}
+              onDrop={(event) => onDrop(event, data._id)}
+            >
               <img
-                key={data._id}
                 src={`http://localhost:5000/get-image/${data._id}`}
                 className="thumbnail"
                 alt={data.name || "stored image"}
+                draggable
               />
-            ))}
-          </div>
+            </div>
+          ))
         )}
       </div>
     </div>

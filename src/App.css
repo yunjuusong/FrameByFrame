@@ -141,30 +141,49 @@ body, html, .app-container {
   background-color: #555;
 }
 
-/* Bottom bar styling */
-.bottom-bar {
-  height: 100px;
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 18px;
-  color: #aaa;
-  overflow-x: auto;
-  padding: 10px 0;
-  white-space: nowrap;
-  position: absolute;
-  bottom: 0; /* Moves the bottom bar to the bottom */
-  width: 100%; /* Ensures the bar spans the entire width */
+/* Editable and Non-editable styling */
+.thumbnail-container.editable img {
+  border: 2px solid red; /* Red border for editable images */
 }
 
+.thumbnail-container.non-editable img {
+  border: 2px solid blue; /* Blue border for non-editable images */
+}
+
+/* Draggable cursor */
+.thumbnail {
+  cursor: grab;
+}
+
+/* Add space between image thumbnails in bottom bar */
+.bottom-bar {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px; /* Space between images */
+}
+
+
+/* Styling for images in the bottom bar */
 .bottom-bar img {
   margin-right: 10px;
   height: 80px;
   width: 80px;
   object-fit: cover;
+  border-radius: 5px; /* Add rounded corners */
+  border: 2px solid transparent; /* Default border (no color) */
+  cursor: grab; /* Indicate draggable behavior for editable images */
 }
+
+/* Add red border for editable images */
+.bottom-bar img.editable {
+  border-color: red;
+}
+
+/* Add blue border for non-editable images */
+.bottom-bar img.non-editable {
+  border-color: blue;
+}
+
 
 .website-title {
   color: black;

@@ -1,18 +1,14 @@
-// imageDetails.js
-
-
-// server.js
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const multer = require("multer");
-const fs = require('fs');
+const fs = require("fs");
 app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
-//mongodb connection
-const mongoUrl = "mongodb+srv://vuhachau2412:framebyframe@framebyframe.yczau.mongodb.net/?retryWrites=true&w=majority&appName=framebyframe"
+// MongoDB connection
+const mongoUrl = "mongodb+srv://vuhachau2412:framebyframe@framebyframe.yczau.mongodb.net/?retryWrites=true&w=majority&appName=framebyframe";
 
 mongoose
   .connect(mongoUrl, {
@@ -26,7 +22,7 @@ mongoose
 require("./imageDetails");
 const Images = mongoose.model("ImageDetails");
 
-// Configure multer for memory storage instead of disk
+// Configure multer for memory storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -41,7 +37,9 @@ app.post("/upload-image", upload.single("image"), async (req, res) => {
       image: {
         data: req.file.buffer,
         contentType: req.file.mimetype
-      }
+      },
+      editable: true, // Flag to mark the image as editable
+      order: 0, // Initial order when uploaded
     });
 
     await newImage.save();
@@ -69,11 +67,27 @@ app.get("/get-image/:id", async (req, res) => {
 
 app.get("/get-all-images", async (req, res) => {
   try {
-    const images = await Images.find({}, 'name _id');  // Only fetch name and ID
+    const images = await Images.find({}, 'name _id editable order'); // Fetch name, ID, editable flag, and order
     res.json({ status: "ok", data: images });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
+// Update image order
+app.put("/update-image-order", async (req, res) => {
+  const { imageOrder } = req.body; // Expecting an array of image IDs
+
+  try {
+    // Update the order of each image individually
+    for (let i = 0; i < imageOrder.length; i++) {
+      await Images.findByIdAndUpdate(imageOrder[i], { order: i });
+    }
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Failed to update image order:", error);
+    res.status(500).json({ success: false, message: "Error updating image order" });
   }
 });
 

@@ -6,7 +6,11 @@ const ImageDetailsSchema = new mongoose.Schema(
     image: {
       data: Buffer,
       contentType: String
-    }
+    },
+    editable: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     collection: "ImageDetails",

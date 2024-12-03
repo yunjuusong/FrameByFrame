@@ -14,7 +14,22 @@ function App() {
       {/* Task Bar */}
       <div className="task-bar">
         <div className="left-side">
-          <span className="website-title">Frame by Frame </span>
+        <span className="website-title">
+          <span style={{ fontFamily: 'Papyrus' }}>F</span>
+          <span style={{ fontFamily: 'Copperplate' }}>R</span>
+          <span style={{ fontFamily: 'Ribeye Marrow' }}>A</span>
+          <span style={{ fontFamily: 'Courier New' }}>M</span>
+          <span style={{ fontFamily: 'OCR A Std' }}>E</span>
+          <span style={{ fontFamily: 'Comic Sans MS' }}> </span>
+          <span style={{ fontFamily: 'Hoefler Text' }}>B</span>
+          <span style={{ fontFamily: 'Big Caslon' }}>Y</span>
+          <span style={{ fontFamily: 'Trebuchet MS' }}> </span>
+          <span style={{ fontFamily: 'Optima' }}>F</span>
+          <span style={{ fontFamily: 'Avant Garde' }}>R</span>
+          <span style={{ fontFamily: 'Overlock' }}>A</span>
+          <span style={{ fontFamily: 'cursive' }}>M</span>
+          <span style={{ fontFamily: 'Helvetica' }}>E</span>
+        </span>
           <img src={require('./images/Group 3.png')} alt="Logo" className="logo" />
         </div>
         <div className="nav-links">

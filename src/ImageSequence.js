@@ -36,7 +36,7 @@ const ImageSequence = ({ sequenceName }) => {
 
         // Initialize FastImageSequence and play the sequence
         const imageSequence = new FastImageSequence(containerRef.current, options);
-        imageSequence.play();
+        imageSequence.play(10);
 
         // Mark loading as false once sequence is ready
         setLoading(false);

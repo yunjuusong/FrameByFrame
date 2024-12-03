@@ -70,7 +70,7 @@ function Home() {
     };
 
     const sequence = new FastImageSequence(sequenceContainerRef.current, options);
-    sequence.play();
+    sequence.play(10);
 
     sequenceInitialized.current = true; // Set the flag to true after initialization
   };

@@ -79,7 +79,7 @@ function Collaborate() {
       sequenceRef.current = new FastImageSequence(sequenceContainerRef.current, options);
     }
 
-    sequenceRef.current.play();
+    sequenceRef.current.play(10);
     setIsSequencePlaying(true); // Update state to reflect playback status
   };
 

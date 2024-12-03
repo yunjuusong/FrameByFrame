@@ -7,7 +7,9 @@ function Collaborate() {
   const [image, setImage] = useState(null);
   const [allImage, setAllImage] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [isSequencePlaying, setIsSequencePlaying] = useState(false); // Track sequence playback state
   const sequenceContainerRef = useRef(); // Ref for the image sequence container
+  const sequenceRef = useRef(null); // Ref for the FastImageSequence instance
 
   useEffect(() => {
     getImage();
@@ -54,6 +56,11 @@ function Collaborate() {
   };
 
   const renderImageSequence = async () => {
+    if (isSequencePlaying) {
+      stopImageSequence();
+      return;
+    }
+
     if (allImage.length === 0) {
       alert("No images available for rendering the sequence.");
       return;
@@ -68,8 +75,19 @@ function Collaborate() {
       objectFit: "cover",
     };
 
-    const sequence = new FastImageSequence(sequenceContainerRef.current, options);
-    sequence.play();
+    if (!sequenceRef.current) {
+      sequenceRef.current = new FastImageSequence(sequenceContainerRef.current, options);
+    }
+
+    sequenceRef.current.play();
+    setIsSequencePlaying(true); // Update state to reflect playback status
+  };
+
+  const stopImageSequence = () => {
+    if (sequenceRef.current) {
+      sequenceRef.current.stop();
+    }
+    setIsSequencePlaying(false); // Update state to reflect stopped status
   };
 
   const handleStartOver = () => {
@@ -132,7 +150,7 @@ function Collaborate() {
               Publish
             </button>
             <button onClick={renderImageSequence} className="render-button">
-                Play Image Sequence
+              {isSequencePlaying ? "Stop Image Sequence" : "Play Image Sequence"}
             </button>
           </div>
         </div>
@@ -144,9 +162,6 @@ function Collaborate() {
             backgroundColor: "black",
           }}
         />
-        <button onClick={renderImageSequence} className="render-button">
-          Play Image Sequence
-        </button>
       </div>
 
       {/* Bottom bar */}

@@ -114,8 +114,8 @@ function Collaborate() {
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
-            <h3>Welcome to the tutorial page.</h3>
-            <p>Click on the red buttons to learn about their functionality. Click on the buttons again to close the description.</p>
+            <h3>Welcome to the Tutorial Page.</h3>
+            <p>Click on the blue buttons to learn about their functionality. Click on the buttons again to close the description.</p>
             <button className="close-popup" onClick={closePopup}>Close</button>
           </div>
         </div>

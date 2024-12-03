@@ -196,3 +196,8 @@ body, html, .app-container {
     margin-top: 10px;
   }
 }
+
+.file-input {
+  outline: 2px solid rgb(136, 167, 252);
+}
+

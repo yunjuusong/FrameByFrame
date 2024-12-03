@@ -168,7 +168,7 @@
     display: inline-flex; /* Use flexbox to align content */
     justify-content: center; /* Center content horizontally within flex container */
     align-items: center; /* Center content vertically within flex container */
-    outline: 2px solid red; /* Red outline */
+    outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 .submit-button {
@@ -179,35 +179,35 @@
   display: inline-flex; /* Use flexbox to align content */
   justify-content: center; /* Center content horizontally within flex container */
   align-items: center; /* Center content vertically within flex container */
-  outline: 2px solid red; /* Red outline */
+  outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 .bottom-bar-button {
   line-height: 1; /* Adjust line height */
   border-radius: 4px; /* Slightly rounded corners */
   text-align: center; /* Horizontally center the text */
-  outline: 2px solid red; /* Red outline */
+  outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 .start-over-button {
   line-height: 1; /* Adjust line height */
   border-radius: 4px; /* Slightly rounded corners */
   text-align: center; /* Horizontally center the text */
-  outline: 2px solid red; /* Red outline */
+  outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 .publish-button {
   line-height: 1; /* Adjust line height */
   border-radius: 4px; /* Slightly rounded corners */
   text-align: center; /* Horizontally center the text */
-  outline: 2px solid red; /* Red outline */
+  outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 .render-button {
   line-height: 1; /* Adjust line height */
   border-radius: 4px; /* Slightly rounded corners */
   text-align: center; /* Horizontally center the text */
-  outline: 2px solid red; /* Red outline */
+  outline: 2px solid rgb(136, 167, 252) /* Red outline */
 }
 
 /* Popup styles */

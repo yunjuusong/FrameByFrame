@@ -49,11 +49,21 @@ function Collaborate() {
   const getImage = async () => {
     try {
       const result = await axios.get("http://localhost:5000/get-all-images");
-      console.log("Fetched Images:", result.data.data);
       setAllImage(result.data.data);
     } catch (error) {
       console.error("Failed to fetch images:", error);
       alert("Failed to load images");
+    }
+  };
+
+  const deleteImage = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/delete-image/${id}`);
+      alert("Image deleted successfully");
+      getImage();
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+      alert("Failed to delete image");
     }
   };
 
@@ -77,40 +87,75 @@ function Collaborate() {
     sequence.play();
   };
 
-  const handleStartOver = () => {
-    console.log("Start Over");
-  };
-
-  const handlePublish = () => {
-    alert("Published!");
-  };
-
   const onDragStart = (event, id) => {
     event.dataTransfer.setData("imageId", id);
   };
 
-  const onDrop = (event, targetId) => {
+  const onDrop = async (event, targetId) => {
     event.preventDefault();
     const sourceId = event.dataTransfer.getData("imageId");
     const updatedImages = [...allImage];
     const sourceIndex = updatedImages.findIndex((img) => img._id === sourceId);
     const targetIndex = updatedImages.findIndex((img) => img._id === targetId);
-
+  
     if (sourceIndex === -1 || targetIndex === -1) return;
-
+  
     const [movedImage] = updatedImages.splice(sourceIndex, 1);
     updatedImages.splice(targetIndex, 0, movedImage);
+  
+    setAllImage(updatedImages); // Update the image order in the frontend
+  
+    // Update the order in the backend
+    try {
+      const imageOrder = updatedImages.map((img) => img._id);
+      await axios.put("http://localhost:5000/update-image-order", { imageOrder });
+    } catch (error) {
+      console.error("Failed to save image order:", error);
+      alert("Failed to save image order.");
+    }
+  };
+  
 
-    setAllImage(updatedImages); // Update the image order
+  const onDragOver = (event) => {
+    event.preventDefault();
   };
 
-  const onDragOver = (event, data) => {
-    event.preventDefault(); // Prevent drop if the image is non-editable
+  const saveImageOrder = async (images) => {
+    const imageOrder = images.map((image) => image._id); // Extract IDs in order
+    try {
+      await axios.put("http://localhost:5000/update-image-order", { imageOrder });
+      alert("Image order updated successfully.");
+    } catch (error) {
+      console.error("Failed to update image order:", error);
+      alert("Failed to save image order.");
+    }
   };
+  
+
+  const publishImages = async () => {
+    try {
+      // Step 1: Make the API call to publish the images
+      const response = await axios.post("http://localhost:5000/publish-images");
+  
+      // Step 2: Check if the response is successful
+      if (response.data.status === "ok") {
+        alert("Images published and order preserved");
+        
+        // Step 3: Refresh the images list after publishing to reflect the updated order
+        getImage(); // Fetch the latest images and their updated order
+      }
+    } catch (error) {
+      console.error("Failed to publish images:", error);
+      alert("Failed to publish images");
+    }
+  };
+  
+  
+  
+  
 
   return (
     <div className="main-container">
-      {/* Sidebar */}
       <div className="sidebar">
         <form onSubmit={submitImage}>
           <input
@@ -146,15 +191,17 @@ function Collaborate() {
         </div>
       </div>
 
-      {/* Preview screen */}
       <div className="preview-screen">
         <div className="preview-screen-header">
           <h2>Preview Screen</h2>
           <div className="preview-buttons">
-            <button className="start-over-button" onClick={handleStartOver}>
+            <button
+              className="start-over-button"
+              onClick={() => alert("Start Over")}
+            >
               Start Over
             </button>
-            <button className="publish-button" onClick={handlePublish}>
+            <button onClick={publishImages} className="publish-button">
               Publish
             </button>
             <button onClick={renderImageSequence} className="render-button">
@@ -172,7 +219,6 @@ function Collaborate() {
         />
       </div>
 
-      {/* Bottom bar */}
       <div className="bottom-bar">
         {allImage.length === 0 ? (
           <p>No images in the database</p>
@@ -180,9 +226,7 @@ function Collaborate() {
           allImage.map((data) => (
             <div
               key={data._id}
-              className={`thumbnail-container ${
-                data.editable ? "editable" : "non-editable"
-              }`}
+              className={`thumbnail-container ${data.editable ? "editable" : "non-editable"}`}
               onDragStart={(event) => onDragStart(event, data._id)}
               onDragOver={onDragOver}
               onDrop={(event) => onDrop(event, data._id)}
@@ -191,12 +235,23 @@ function Collaborate() {
                 src={`http://localhost:5000/get-image/${data._id}`}
                 className="thumbnail"
                 alt={data.name || "stored image"}
-                draggable
+                draggable={data.editable}
               />
+              {data.editable && (
+                <button
+                  className="delete-button"
+                  onClick={() => deleteImage(data._id)}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           ))
         )}
       </div>
+
+
+
     </div>
   );
 }

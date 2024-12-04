@@ -198,6 +198,38 @@ body, html, .app-container {
   margin: 20px;
 }
 
+.thumbnail-container {
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 2px 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
+
+
 /* Task bar layout adjustments for responsive design */
 @media (max-width: 768px) {
   .task-bar {

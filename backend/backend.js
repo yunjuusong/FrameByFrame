@@ -75,7 +75,6 @@ app.get("/get-all-images", async (req, res) => {
   }
 });
 
-// Update image order
 app.put("/update-image-order", async (req, res) => {
   const { imageOrder } = req.body; // Expecting an array of image IDs
 
@@ -90,6 +89,52 @@ app.put("/update-image-order", async (req, res) => {
     res.status(500).json({ success: false, message: "Error updating image order" });
   }
 });
+
+
+
+app.delete("/delete-image/:id", async (req, res) => {
+  try {
+    const image = await Images.findByIdAndDelete(req.params.id);
+    if (!image) {
+      return res.status(404).json({ status: "error", message: "Image not found" });
+    }
+    res.json({ status: "ok", message: "Image deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
+// Route to publish images and save the current order
+app.post("/publish-images", async (req, res) => {
+  try {
+    // Update the `editable` field to false for all images
+    await Images.updateMany({}, { $set: { editable: false } });
+
+    // Don't touch the order; it should remain as is
+    res.json({ status: "ok", message: "All images published" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
+
+
+
+
+// app.post("/publish-images", async (req, res) => {
+//   try {
+//     await Images.updateMany({}, { $set: { editable: false } });
+//     res.json({ status: "ok", message: "All images published successfully." });
+//   } catch (error) {
+//     console.error("Error publishing images:", error);
+//     res.status(500).json({ status: "error", message: error.message });
+//   }
+// });
+
+
+
 
 app.listen(5000, () => {
   console.log("Server Started");

@@ -197,7 +197,25 @@ body, html, .app-container {
   }
 }
 
-.file-input {
-  outline: 2px solid rgb(136, 167, 252);
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
 }
 
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  line-height: 18px;
+}

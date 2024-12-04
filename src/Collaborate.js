@@ -10,10 +10,7 @@ function Collaborate() {
   const [isSequencePlaying, setIsSequencePlaying] = useState(false); // Track sequence playback state
   const sequenceContainerRef = useRef(); // Ref for the image sequence container
   const sequenceRef = useRef(null); // Ref for the FastImageSequence instance
-  //   const [image, setImage] = useState(null);
-  //  const [allImage, setAllImage] = useState([]);
-  //  const sequenceContainerRef = useRef();
-
+  
   useEffect(() => {
     fetchImages();
   }, []);
@@ -81,9 +78,52 @@ function Collaborate() {
     }
   };
 
-  useEffect(() => {
-    getImage();
-  }, []);
+  const onDragStart = (event, id) => {
+    event.dataTransfer.setData("imageId", id);
+  };
+
+  const onDrop = async (event, targetId) => {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData("imageId");
+    const updatedImages = [...allImage];
+    const sourceIndex = updatedImages.findIndex((img) => img._id === sourceId);
+    const targetIndex = updatedImages.findIndex((img) => img._id === targetId);
+
+    if (sourceIndex === -1 || targetIndex === -1) return;
+
+    const [movedImage] = updatedImages.splice(sourceIndex, 1);
+    updatedImages.splice(targetIndex, 0, movedImage);
+
+    setAllImage(updatedImages); // Update the image order in the frontend
+
+    // Update the order in the backend
+    try {
+      const imageOrder = updatedImages.map((img) => img._id);
+      await axios.put("http://localhost:5000/update-image-order", {
+        imageOrder,
+      });
+    } catch (error) {
+      console.error("Failed to save image order:", error);
+      alert("Failed to save image order.");
+    }
+  };
+
+  const onDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const saveImageOrder = async (images) => {
+    const imageOrder = images.map((image) => image._id); // Extract IDs in order
+    try {
+      await axios.put("http://localhost:5000/update-image-order", {
+        imageOrder,
+      });
+      alert("Image order updated successfully.");
+    } catch (error) {
+      console.error("Failed to update image order:", error);
+      alert("Failed to save image order.");
+    }
+  };
 
   const submitImage = async (e) => {
     e.preventDefault();
@@ -177,6 +217,10 @@ function Collaborate() {
     alert("Published!");
   };
 
+  useEffect(() => {
+    getImage();
+  }, []);
+
   return (
     <div className="main-container">
       {/* Sidebar */}
@@ -215,58 +259,72 @@ function Collaborate() {
         </div>
       </div>
 
-        {/* Preview screen */}
-        <div className="preview-screen">
-          <div className="preview-screen-header">
-            <h2>Preview Screen</h2>
-            <div className="preview-buttons">
-              <button className="start-over-button" onClick={fetchImages}>Start Over</button>
-              <button className="publish-button" onClick={handlePublishImages}>Publish</button>
-              <button onClick={renderImageSequence} className="render-button">
-                {isSequencePlaying
-                  ? "Stop Image Sequence"
-                  : "Play Image Sequence"}
-              </button>
-            </div>
+      {/* Preview screen */}
+      <div className="preview-screen">
+        <div className="preview-screen-header">
+          <h2>Preview Screen</h2>
+          <div className="preview-buttons">
+            <button className="start-over-button" onClick={fetchImages}>
+              Start Over
+            </button>
+            <button className="publish-button" onClick={handlePublishImages}>
+              Publish
+            </button>
+            <button onClick={renderImageSequence} className="render-button">
+              {isSequencePlaying
+                ? "Stop Image Sequence"
+                : "Play Image Sequence"}
+            </button>
           </div>
-          <div
-            ref={sequenceContainerRef}
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "black",
-            }}
-          />
         </div>
+        <div
+          ref={sequenceContainerRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "black",
+          }}
+        />
+      </div>
 
-        {/* Bottom bar */}
-        <div className="bottom-bar">
-          {allImage.length === 0 ? (
-            <p>No images available. Please upload some images.</p>
-          ) : (
-            allImage.map((data) => {
-              console.log(
-                `Rendering image with ID: ${data._id}, Editable: ${data.editable}`
-              );
-              return (
-                <div key={data._id} className="image-container">
-                  <img
-                    src={`http://localhost:5000/get-image/${data._id}`}
-                    alt={data.name || "Stored image"}
-                  />
-                  {data.editable && (
-                    <button
-                      className="delete-button"
-                      onClick={() => handleImageDelete(data._id)}
-                    >
-                      X
-                    </button>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </div>
+      {/* Bottom bar */}
+      <div className="bottom-bar">
+        {allImage.length === 0 ? (
+          <p>No images available. Please upload some images.</p>
+        ) : (
+          allImage.map((data) => {
+            console.log(
+              `Rendering image with ID: ${data._id}, Editable: ${data.editable}`
+            );
+            return (
+              <div
+                key={data._id}
+                className={`image-container ${
+                  data.editable ? "editable" : "non-editable"
+                }`}
+                onDragStart={(event) => onDragStart(event, data._id)}
+                onDragOver={onDragOver}
+                onDrop={(event) => onDrop(event, data._id)}
+              >
+                <img
+                  src={`http://localhost:5000/get-image/${data._id}`}
+                  className="thumbnail"
+                  alt={data.name || "Stored image"}
+                  draggable={data.editable}
+                />
+                {data.editable && (
+                  <button
+                    className="delete-button"
+                    onClick={() => handleImageDelete(data._id)}
+                  >
+                    X
+                  </button>
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

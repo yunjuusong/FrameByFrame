@@ -16,7 +16,7 @@ mongoose.connect(mongoUrl, {
       // Fetch the first 30 images sorted by their creation date (or another suitable field)
       const imagesToDelete = await Images.find({})
         .sort({ createdAt: 1 }) // Sort by creation date in ascending order
-        .limit(30);             // Limit the result to the first 30 images
+        .limit(11);             // Limit the result to the first 30 images
 
       if (imagesToDelete.length === 0) {
         console.log("No images found to delete.");

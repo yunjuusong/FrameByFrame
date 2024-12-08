@@ -1,7 +1,7 @@
 import { FastImageSequence } from "@mediamonks/fast-image-sequence";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 function Collaborate() {
@@ -9,9 +9,10 @@ function Collaborate() {
   const [allImage, setAllImage] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [isSequencePlaying, setIsSequencePlaying] = useState(false);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const sequenceContainerRef = useRef();
   const sequenceRef = useRef(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchImages();
@@ -66,6 +67,14 @@ function Collaborate() {
       console.error("Failed to publish images:", error);
       alert("Failed to publish images. Please try again.");
     }
+  };
+
+  const confirmPublish = () => {
+    setShowConfirmationPopup(true);
+  };
+
+  const cancelPublish = () => {
+    setShowConfirmationPopup(false);
   };
 
   const handleImageDelete = async (id) => {
@@ -151,10 +160,6 @@ function Collaborate() {
     setIsSequencePlaying(false);
   };
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
-
   return (
     <div className="main-container">
       {/* Sidebar */}
@@ -196,7 +201,7 @@ function Collaborate() {
             <button className="start-over-button" onClick={fetchImages}>
               Start Over
             </button>
-            <button className="publish-button" onClick={handlePublishImages}>
+            <button className="publish-button" onClick={confirmPublish}>
               Publish
             </button>
             <button onClick={renderImageSequence} className="render-button">
@@ -251,6 +256,22 @@ function Collaborate() {
           })
         )}
       </div>
+
+      {/* Confirmation Popup */}
+      {showConfirmationPopup && (
+        <div className="confirmation-popup">
+          <div className="popup-content">
+            <p>
+              Are you sure you want to publish? Once published, images cannot be
+              removed or edited.
+            </p>
+            <div className="popup-buttons">
+              <button onClick={handlePublishImages}>Publish</button>
+              <button onClick={cancelPublish}>Back</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -35,19 +35,28 @@ function Collaborate() {
       alert("Please select an image before submitting.");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append("image", image);
     formData.append("editable", true);
-
+  
     try {
-      await axios.post("http://localhost:5000/upload-image", formData, {
+      const response = await axios.post("http://localhost:5000/upload-image", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+  
       console.log("Image uploaded successfully");
+  
+      // Add the uploaded image to `uploadedImages` state
+      const uploadedImage = {
+        previewUrl: URL.createObjectURL(image),
+        id: response.data?.id || new Date().getTime().toString(), // Replace with actual ID if returned by backend
+      };
+      setUploadedImages((prev) => [uploadedImage, ...prev]);
+  
+      // Optionally re-fetch images to update allImage state
       fetchImages();
-
+  
       e.target.reset();
       setImage(null);
     } catch (error) {
@@ -55,6 +64,7 @@ function Collaborate() {
       alert("Failed to upload image. Please try again.");
     }
   };
+  
 
   const handlePublishImages = async () => {
     try {

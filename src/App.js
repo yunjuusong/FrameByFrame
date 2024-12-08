@@ -1,49 +1,48 @@
 import { FastImageSequence } from "@mediamonks/fast-image-sequence";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { NavLink, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import './App.css';
 import Collaborate from './Collaborate'; // Import the new Collaborate component
 import Tutorials from './Tutorials';
-
 
 function App() {
   return (
     <Router>
       <div className="app-container">
-      {/* Task Bar */}
-      <div className="task-bar">
-        <div className="left-side">
-        <span className="website-title">
-          <span style={{ fontFamily: 'Papyrus' }}>F</span>
-          <span style={{ fontFamily: 'Copperplate' }}>R</span>
-          <span style={{ fontFamily: 'Ribeye Marrow' }}>A</span>
-          <span style={{ fontFamily: 'Courier New' }}>M</span>
-          <span style={{ fontFamily: 'OCR A Std' }}>E</span>
-          <span style={{ fontFamily: 'Comic Sans MS' }}> </span>
-          <span style={{ fontFamily: 'Hoefler Text' }}>B</span>
-          <span style={{ fontFamily: 'Big Caslon' }}>Y</span>
-          <span style={{ fontFamily: 'Trebuchet MS' }}> </span>
-          <span style={{ fontFamily: 'Optima' }}>F</span>
-          <span style={{ fontFamily: 'Avant Garde' }}>R</span>
-          <span style={{ fontFamily: 'Overlock' }}>A</span>
-          <span style={{ fontFamily: 'cursive' }}>M</span>
-          <span style={{ fontFamily: 'Helvetica' }}>E</span>
-        </span>
-          <img src={require('./images/Group 3.png')} alt="Logo" className="logo" />
+        {/* Task Bar */}
+        <div className="task-bar">
+          <div className="left-side">
+            <span className="website-title">
+              <span style={{ fontFamily: 'Papyrus' }}>F</span>
+              <span style={{ fontFamily: 'Copperplate' }}>R</span>
+              <span style={{ fontFamily: 'Ribeye Marrow' }}>A</span>
+              <span style={{ fontFamily: 'Courier New' }}>M</span>
+              <span style={{ fontFamily: 'OCR A Std' }}>E</span>
+              <span style={{ fontFamily: 'Comic Sans MS' }}> </span>
+              <span style={{ fontFamily: 'Hoefler Text' }}>B</span>
+              <span style={{ fontFamily: 'Big Caslon' }}>Y</span>
+              <span style={{ fontFamily: 'Trebuchet MS' }}> </span>
+              <span style={{ fontFamily: 'Optima' }}>F</span>
+              <span style={{ fontFamily: 'Avant Garde' }}>R</span>
+              <span style={{ fontFamily: 'Overlock' }}>A</span>
+              <span style={{ fontFamily: 'cursive' }}>M</span>
+              <span style={{ fontFamily: 'Helvetica' }}>E</span>
+            </span>
+            <img src={require('./images/Group 3.png')} alt="Logo" className="logo" />
+          </div>
+          <div className="nav-links">
+            <NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}>Home</NavLink>
+            <NavLink to="/tutorials" className={({ isActive }) => isActive ? "active-link" : ""}>Tutorial</NavLink>
+            <NavLink to="/collaborate" className={({ isActive }) => isActive ? "active-link" : ""}>Collaborate</NavLink>
+          </div>
         </div>
-        <div className="nav-links">
-          <Link to="/">Home</Link>
-          <Link to="/tutorials">Tutorial</Link>
-          <Link to="/collaborate" className="collaborate">Collaborate</Link>
-        </div>
-      </div>
 
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tutorials" element={<Tutorials />} />
-          <Route path="/collaborate" element={<Collaborate />} /> {/* Use Collaborate */}
+          <Route path="/collaborate" element={<Collaborate />} />
         </Routes>
       </div>
     </Router>
@@ -52,10 +51,9 @@ function App() {
 
 function Home() {
   const [allImage, setAllImage] = useState([]);
-  const sequenceContainerRef = useRef(null); // Ref for the image sequence container
-  const sequenceInitialized = useRef(false); // Ref to track if sequence is initialized
+  const sequenceContainerRef = useRef(null);
+  const sequenceInitialized = useRef(false);
 
-  // Fetch images from the backend
   const getImage = async () => {
     try {
       const result = await axios.get("http://localhost:5000/get-all-images");
@@ -65,14 +63,11 @@ function Home() {
     }
   };
 
-  // Render the image sequence
   const renderImageSequence = () => {
     if (allImage.length === 0) {
       alert("No images available for rendering the sequence.");
       return;
     }
-
-    // Only initialize the sequence if it hasn't been initialized already
     if (sequenceInitialized.current) return;
 
     const options = {
@@ -86,18 +81,16 @@ function Home() {
 
     const sequence = new FastImageSequence(sequenceContainerRef.current, options);
     sequence.play(10);
-
-    sequenceInitialized.current = true; // Set the flag to true after initialization
+    sequenceInitialized.current = true;
   };
 
-  // Fetch the images when the component mounts
   useEffect(() => {
     getImage();
   }, []);
 
   useEffect(() => {
     if (allImage.length > 0) {
-      renderImageSequence(); // Start the sequence after images are fetched
+      renderImageSequence();
     }
   }, [allImage]);
 
@@ -109,12 +102,11 @@ function Home() {
         </p>
       </div>
 
-      {/* Video / Image sequence container */}
       <div
         ref={sequenceContainerRef}
         style={{
           width: "900px",
-          height: "500px",  // Adjust the height of the video container
+          height: "500px",
           backgroundColor: "black",
           marginTop: "20px",
         }}

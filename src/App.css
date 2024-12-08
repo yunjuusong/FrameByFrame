@@ -204,6 +204,12 @@ body, html, .app-container {
   margin: 5px;
 }
 
+.active-link {
+  color: blue; /* Highlight color */
+  font-weight: bold; /* Optional */
+  text-decoration: underline; /* Optional */
+}
+
 .delete-button {
   position: absolute;
   top: 5px;

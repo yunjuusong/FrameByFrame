@@ -103,6 +103,20 @@ body, html, .app-container {
   border: 1px solid #ccc;
 }
 
+/* Preview screen text styling */
+.preview-screen-header-text {
+  position: absolute; /* Place relative to the .preview-screen */
+  top: 10px; /* Aligns vertically with the buttons */
+  left: 10px; /* Place at the left corner */
+  z-index: 10; /* Ensure it stays above other content */
+  font-size: 18px; /* Adjust font size */
+  color: #333; /* Text color */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional background for better visibility */
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for emphasis */
+}
+
 /* Preview screen styling */
 .preview-screen {
   flex: 1;
@@ -110,6 +124,10 @@ body, html, .app-container {
   border: 1px solid #ccc;
   margin: 20px; /* Adds space around the preview screen */
   position: relative; /* Needed for positioning label and buttons */
+  display: flex;
+  width: 100%; /* Adjust the width as needed */
+  height: auto; /* Automatically adjust the height to maintain aspect ratio */
+  object-fit: contain; /* Ensures the image fits within the container without being stretched */
 }
 
 /* Preview screen header with buttons */
@@ -123,7 +141,14 @@ body, html, .app-container {
 .preview-buttons {
   display: flex;
   gap: 10px;
-  justify-content: flex-end; /* Ensure buttons are right-aligned */
+  position: absolute; /* Position buttons on top */
+  top: 10px; /* Adjust distance from the top edge */
+  right: 10px; /* Adjust distance from the right edge */
+  z-index: 10; /* High value to stay above other content */
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for emphasis */
 }
 
 .preview-screen .button {
@@ -225,3 +250,5 @@ body, html, .app-container {
   text-align: center;
   line-height: 18px;
 }
+
+

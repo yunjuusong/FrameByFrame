@@ -161,8 +161,9 @@ function Collaborate() {
       {/* Preview screen */}
       <div className="preview-screen">
         <div className="preview-screen-header">
-          <h2>Preview Screen</h2>
-          <h3>A preview of the most updated video will be displayed down below.</h3>
+        <div class="preview-screen-header-text">Preview Screen</div>
+        <div class="preview-screen-header-text-2">A preview of the most updated video will be displayed down below.</div>
+        
           <div className="preview-buttons">
             {/* Replaced Start Over button with toggle functionality */}
             <button className="start-over-button" onClick={toggleStartOverBox}>

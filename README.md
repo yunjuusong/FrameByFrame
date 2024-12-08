@@ -3,8 +3,8 @@ Make sure your Github repo has a valid README that describes how to install and 
 Welcome to Frame by Frame! 
 
 To run the tool:
-* Open a terminal window. Run the following commands in order: 
+1. Open a terminal window. Run the following commands in order: 
         cd backend
         node backend.js
-* Open another terminal window. Run the following:
+2. Open another terminal window. Run the following:
         npm start

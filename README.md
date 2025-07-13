@@ -1,3 +1,8 @@
+
+<img width="936" height="520" alt="Screenshot 2025-07-13 at 3 49 35 AM" src="https://github.com/user-attachments/assets/ce743c2b-6180-4d13-8970-1c91f4f09ade" />
+<img width="936" height="551" alt="Screenshot 2025-07-13 at 3 48 49 AM" src="https://github.com/user-attachments/assets/973d5e43-97d9-44e8-b263-1073e483e1d2" />
+
+
 Welcome to Frame by Frame! Join a collaborative art piece where each contribution tells a story—a piece of a larger artwork that captures the range and liveliness of the human condition, frame by frame.
 
 To run the tool:
